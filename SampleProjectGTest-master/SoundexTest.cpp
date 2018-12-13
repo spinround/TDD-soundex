@@ -31,5 +31,10 @@ TEST_F(SoundexEncoding, ReplaceConsonanatsWithAppropriateDigits)
     //arrange
     //act
     //assert
-    ASSERT_THAT(soundex.encode("AB"), Eq("A100"));
+    ASSERT_THAT(soundex.encode("Ab"), Eq("A100"));
+    ASSERT_THAT(soundex.encode("Ac"), Eq("A200"));
+    ASSERT_THAT(soundex.encode("Ad"), Eq("A300"));
+    ASSERT_THAT(soundex.encode("Al"), Eq("A400"));
+    ASSERT_THAT(soundex.encode("Am"), Eq("A500"));
+    ASSERT_THAT(soundex.encode("Ar"), Eq("A600"));
 }
