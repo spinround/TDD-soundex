@@ -13,17 +13,45 @@
      */
 string Soundex::zeroPad(const string& word)const
     {
-        return word +"000";
+        auto zerosNeeded = 4-word.length();
+        return word + string(zerosNeeded,'0');
     }
     /**
      * @brief encode word
      * @param word
      * @return encoded word
      */
-    string Soundex::encode(const string& word) const
+string Soundex::encode(const string& word) const
+{
+
+    return zeroPad(head(word)+encodeDigits(word));
+}
+
+/**
+ * @brief extract first char of sting
+ * @param word
+ * @return first letter of string
+ */
+string Soundex::head(const string &word) const
+{
+    return word.substr(0,1);
+}
+
+
+/**
+ * @brief encode the string into digits
+ * @param word
+ * @return encoded string
+ */
+string Soundex::encodeDigits(const string &word) const
+{
+    if(word.length()>1)
     {
-        return zeroPad(word);
+        return "1";
     }
+
+    return "";
+}
 
 
 
