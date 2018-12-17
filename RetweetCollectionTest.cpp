@@ -43,3 +43,22 @@ TEST_F(ARetweetCollection, IsNotEmptyWhenStuff)
     ASSERT_THAT(collection.size(), Gt(0u));
     ASSERT_FALSE(collection.isEmpty());
 }
+
+class ARetweetCollectionWithOneTweet : public Test
+{
+public:
+    RetweetCollection collection;
+    void SetUp() override
+    {
+        collection.add(Tweet());
+    }
+};
+
+TEST_F(ARetweetCollectionWithOneTweet, IsNoLongerNon)
+{
+    ASSERT_FALSE(collection.isEmpty());
+}
+TEST_F(ARetweetCollectionWithOneTweet, SizeOfOne)
+{
+    ASSERT_THAT(collection.size(),Eq(1u));
+}
