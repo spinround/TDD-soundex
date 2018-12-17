@@ -57,7 +57,8 @@ string Soundex::encodeDigits(const string &word) const
         {
             break;
         }
-        else if(encodeDigit(letter) != lastDigit(encoding))
+        auto digit = encodeDigit(letter);
+        if(digit != NotADigit && digit != lastDigit(encoding))
         {
             encoding += encodeDigit(letter);
         }
@@ -95,10 +96,10 @@ string Soundex::encodeDigit(char letter) const
             {'d', "3"}
     };
 
-    auto it = encoding.find(letter);
+    auto it = encoding.find(lower(letter));
 
     // if you reach the end of the map, you got no match. Return empty.
-    return it == encoding.end() ? "" : it->second;
+    return it == encoding.end() ? NotADigit : it->second;
 
 
 }
@@ -117,7 +118,7 @@ string Soundex::lastDigit(const string &encoding) const
 {
     if(encoding.empty())
     {
-        return "";
+        return NotADigit;
     }
     else
     {
@@ -129,6 +130,11 @@ string Soundex::lastDigit(const string &encoding) const
 
 string Soundex::toUpper(const string &word) const {
     return std::string(1, toupper(static_cast<unsigned char>(word.front())));
+}
+
+char Soundex::lower(char c) const {
+
+    return tolower(static_cast<unsigned char>(c));
 }
 
 

@@ -86,3 +86,27 @@ TEST_F(SoundexEncoding, uppercase)
     // Act & Assert
     ASSERT_THAT(soundex.encode("abcd"), StartsWith("A"));
 }
+
+TEST_F(SoundexEncoding, ignoreVowelsAndSuch)
+{
+    //arrange
+    //act
+    //assert
+    ASSERT_THAT(soundex.encode("BaAeEiIoOuUhHwWyYcdl"),Eq("B234"));
+}
+
+TEST_F(SoundexEncoding, yah)
+{
+    //arrange
+    //act
+    //assert
+    ASSERT_THAT(soundex.encode("BCDL"),Eq(soundex.encode("Bcdl")));
+}
+
+TEST_F(SoundexEncoding, honeyman)
+{
+    //arrange
+    //act
+    //assert
+    ASSERT_THAT(soundex.encode("honeyman"),Eq(soundex.encode("H555")));
+}
