@@ -25,8 +25,6 @@ string Soundex::zeroPad(const string& word)const
 string Soundex::encode(const string& word) const
 {
 
-
-
     return zeroPad(toUpper(head(word)) + (encodeDigits(tail(word))));
 }
 
