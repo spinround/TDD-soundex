@@ -19,6 +19,10 @@ public:
     Tweet(const string& msg = "", const string& user = Tweet :: NULL_USER);
     string getUser();
 
+    bool operator==(const Tweet &rhs) const;
+
+    bool operator!=(const Tweet &rhs) const;
+
     bool operator< (const Tweet &rhs)const;
 };
 
