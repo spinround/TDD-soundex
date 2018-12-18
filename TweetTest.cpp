@@ -25,3 +25,27 @@ TEST(ATweet, notEqual)
     Tweet tweetie("doopy","@user");
     ASSERT_FALSE(tweet == tweetie);
 }
+TEST(ATweet, lessThanUer)
+{
+    Tweet tweet("msg","@user1");
+    Tweet tweetie("msg","@user2");
+    ASSERT_THAT(tweet, Lt(tweetie));
+}
+TEST(ATweet, lessThanMSG)
+{
+    Tweet tweet("msg1","@user");
+    Tweet tweetie("msg2","@user");
+    ASSERT_THAT(tweet, Lt(tweetie));
+}
+TEST(ATweet, copy)
+{
+    Tweet tweet("msg1","@user");
+    Tweet tweetie(tweet);
+    ASSERT_THAT(tweet, Eq(tweetie));
+}
+TEST(ATweet, exceptionTest)
+{
+    string invalidUser("butttts@");
+
+    ASSERT_THROW(Tweet tweet("msg1",invalidUser), InvalidUserException);
+}
