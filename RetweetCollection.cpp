@@ -12,12 +12,14 @@ bool RetweetCollection::isEmpty()
 
 int RetweetCollection::size()
 {
-    return size_;
+    return tweets.size();
 }
 
 void RetweetCollection::add(Tweet tweet)
 {
-    size_++;
+
+    tweets.insert(tweet);
+
 }
 
 RetweetCollection::RetweetCollection()

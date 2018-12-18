@@ -22,12 +22,12 @@ TEST_F(ARetweetCollection, HasSizeZeroWhenCreated)
 
     ASSERT_THAT(collection.size(), Eq(0u));
 }
-//TEST_F(ARetweetCollection, noLongerEmptyAfterTweet)
-//{
-//
-//    collection.add(Tweet());
-//    ASSERT_FALSE(collection.isEmpty());
-//}
+TEST_F(ARetweetCollection, noLongerEmptyAfterTweet)
+{
+
+   collection.add(Tweet());
+    ASSERT_FALSE(collection.isEmpty());
+}
 TEST_F(ARetweetCollection, IsEmptyWhenItsSizeIsZero)
 {
 
@@ -50,8 +50,8 @@ public:
     RetweetCollection collection;
     void SetUp() override
     {
-        collection.add(Tweet());
-    }
+        collection.add(Tweet("msg","@user"));
+    };
 };
 
 TEST_F(ARetweetCollectionWithOneTweet, IsNoLongerNon)
@@ -61,4 +61,13 @@ TEST_F(ARetweetCollectionWithOneTweet, IsNoLongerNon)
 TEST_F(ARetweetCollectionWithOneTweet, SizeOfOne)
 {
     ASSERT_THAT(collection.size(),Eq(1u));
+}
+TEST_F(ARetweetCollectionWithOneTweet, duplicate)
+{
+    Tweet tweet("msg","@user");
+    Tweet duplicate(tweet);
+    collection.add(tweet);
+    collection.add(duplicate);
+
+    ASSERT_THAT(collection.size(), Eq(1u));
 }
