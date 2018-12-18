@@ -1,5 +1,5 @@
 #include "gmock/gmock.h"
-#include "Soundex.h"
+#include "soundex.h"
 
 
 using namespace testing;
