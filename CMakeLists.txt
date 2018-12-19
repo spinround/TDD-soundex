@@ -10,6 +10,6 @@ set(CMAKE_CXX_FLAGS "${CMAXE_CXX_FLAGS} -Wall")
 
 #set(SRCS main.cpp SoundexTest.cpp soundex.cpp soundex.h)
 #set(SRCS main.cpp RetweetCollection.cpp RetweetCollection.h RetweetCollectionTest.cpp Tweet.cpp Tweet.h TweetTest.cpp ParameterizedTest.cpp)
-set(SRCS main.cpp Portfolio.cpp Portfolio.h PortfolioTest.cpp)
+set(SRCS main.cpp Portfolio.cpp Portfolio.h PortfolioTest.cpp PurchaseRecord.h DateTestConsonants.h)
 add_executable(test ${SRCS})
 target_link_libraries(test pthread gmock gmock_main gtest gtest_main)
