@@ -3,13 +3,33 @@
 
 using namespace ::testing;
 using namespace std;
+using namespace boost::gregorian;
 
-class APortfolio: public Test {
+class APortfolio: public Test
+{
 public:
-   static const string IBM;
-   static const string SAMSUNG;
-   Portfolio portfolio_;
+    static const date ArbitraryDate;
+    static const string IBM;
+    static const string SAMSUNG;
+    Portfolio portfolio_;
+
+    void Purchase(const string& symbol, unsigned int shareCount,
+                  const date& transactionDate=APortfolio::ArbitraryDate)
+    {
+       portfolio_.Purchase(symbol, shareCount, transactionDate);
+    }
+    void Sell(const string& symbol, unsigned int shareCount,
+              const date& transactionDate=APortfolio::ArbitraryDate)
+    {
+       portfolio_.Sell(symbol, shareCount, transactionDate);
+    }
+    void ASSERT_PURCHASE(PurchaseRecord& purchase, int shareCount, const date& date)
+    {
+       ASSERT_THAT(purchase.ShareCount, Eq(shareCount));
+       ASSERT_THAT(purchase.Date, Eq(date));
+    }
 };
+const date APortfolio::ArbitraryDate(2018, Dec, 1);
 
 const string APortfolio::IBM("IBM");
 const string APortfolio::SAMSUNG("SSNLF");
@@ -19,7 +39,7 @@ TEST_F(APortfolio, IsEmptyWhenCreated) {
 }
 
 TEST_F(APortfolio, IsNotEmptyAfterPurchase) {
-   portfolio_.Purchase(IBM, 1);
+   Purchase(IBM, 1);
 
    ASSERT_FALSE(portfolio_.IsEmpty());
 }
@@ -29,37 +49,54 @@ TEST_F(APortfolio, AnswersZeroForShareCountOfUnpurchasedSymbol) {
 }
 
 TEST_F(APortfolio, AnswersShareCountForPurchasedSymbol) {
-   portfolio_.Purchase(IBM, 2);
+   Purchase(IBM, 2);
 
    ASSERT_THAT(portfolio_.ShareCount(IBM), Eq(2u));
 }
 
 TEST_F(APortfolio, ThrowsOnPurchaseOfZeroShares) {
-   ASSERT_THROW(portfolio_.Purchase(IBM, 0), InvalidPurchaseException);
+   ASSERT_THROW(Purchase(IBM, 0), InvalidPurchaseException);
 }
 
 TEST_F(APortfolio, AnswersShareCountForAppropriateSymbol) {
-   portfolio_.Purchase(IBM, 5);
-   portfolio_.Purchase(SAMSUNG, 10);
+   Purchase(IBM, 5);
+   Purchase(SAMSUNG, 10);
 
    ASSERT_THAT(portfolio_.ShareCount(IBM), Eq(5u));
 }
 
 TEST_F(APortfolio, ShareCountReflectsAccumulatedPurchasesOfSameSymbol) {
-   portfolio_.Purchase(IBM, 5);
-   portfolio_.Purchase(IBM, 15);
+   Purchase(IBM, 5);
+   Purchase(IBM, 15);
 
    ASSERT_THAT(portfolio_.ShareCount(IBM), Eq(5u + 15));
 }
 
 TEST_F(APortfolio, ReducesShareCountOfSymbolOnSell)  {
-   portfolio_.Purchase(SAMSUNG, 30);
-   
-   portfolio_.Sell(SAMSUNG, 13);
+   Purchase(SAMSUNG, 30);
+   Sell(SAMSUNG, 13);
 
    ASSERT_THAT(portfolio_.ShareCount(SAMSUNG), Eq(30u - 13));
 }
 
 TEST_F(APortfolio, ThrowsWhenSellingMoreSharesThanPurchased) {
-   ASSERT_THROW(portfolio_.Sell(SAMSUNG, 1), InvalidSellException);
+   ASSERT_THROW(Sell(SAMSUNG, 1), InvalidSellException);
+}
+
+TEST_F(APortfolio, AnswersThePurchaseRecordsForASinglePurchase) {
+   //date dateOfPurchase(2018, Nov, 22);
+   Purchase(SAMSUNG, 5, ArbitraryDate);
+
+   auto purchases = portfolio_.Purchases(SAMSUNG);
+   ASSERT_PURCHASE(purchases[0], 5, ArbitraryDate);\
+
+}
+
+TEST_F(APortfolio, IncludeSalesInPurchase)
+{
+   Purchase(SAMSUNG, 10, ArbitraryDate);
+   Sell(SAMSUNG, 5, ArbitraryDate);
+
+   auto sales = portfolio_.Purchases(SAMSUNG);
+   ASSERT_PURCHASE(sales[1], -5, ArbitraryDate);
 }
